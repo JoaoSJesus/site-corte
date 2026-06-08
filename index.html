@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barbearia - Agendamento</title>
+    <link rel="stylesheet" href="corte.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="#secao1"><h1>VT Cortes</h1></a>
+            <ul class="menu">
+                <li><a href="#secao1">Corte Simples</a></li>
+                <li>&nbsp;</li>
+                <li><a href="#secao2">Barba Completa</a></li>
+                <li>&nbsp;</li>
+                <li><a href="#secao3">Combo Clássico</a></li>
+                <li>&nbsp;</li>
+                <li><a href="#secao4">Sobrancelha</a></li>
+                <li>&nbsp;</li>
+                <li><a href="#secao5">Pezinho / Acabamento</a></li>
+                <li>&nbsp;</li>
+                <li><a href="#resumo-agendamento">Meu Agendamento</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <br><br><br><br><br><br><br><br><br>
+
+    <section id="secao1" class="pratos">
+        <img src="corte1.jpeg.jpeg" alt="Corte de Cabelo">
+        <ul class="lista">
+            <h2>Corte de Cabelo</h2>
+            <li>Corte social ou Degradê</li>
+            <li>Lavagem inclusa</li>
+            <li>Finalização com pomada modeladora</li>
+        </ul> 
+        <div class="compra-container">
+            <h3>R$ 35,00</h3>
+            <button class="btn-adicionar" onclick="adicionarAoAgendamento('Corte de Cabelo', 35.00)">
+                Adicionar Serviço
+            </button>
+        </div>
+    </section>
+    <br><br>
+
+    <section id="secao2" class="pratos">
+        <img src="barba.jpeg" alt="Barba">
+        <ul class="lista"> 
+            <h2>Barba Completa</h2>
+            <li>Desenho de barba alinhado</li>
+            <li>Uso de toalha quente</li>
+            <li>Pós-barba e óleo hidratante</li>
+        </ul>
+        <div class="compra-container">
+            <h3>R$ 30,00</h3>
+            <button class="btn-adicionar" onclick="adicionarAoAgendamento('Barba Completa', 30.00)">
+                Adicionar Serviço
+            </button>
+        </div>
+    </section>
+    <br><br>
+
+    <section id="secao3" class="pratos">
+        <img src="completo.jpeg.jpeg" alt="Combo Cabelo e Barba">
+        <ul class="lista"> 
+            <h2>Combo: Cabelo + Barba</h2>
+            <li>O trato completo para o seu visual</li>
+            <li>Ganha desconto fechando o combo</li>
+            <li>Atendimento VIP</li>
+        </ul>
+        <div class="compra-container">
+            <h3>R$ 55,00</h3>
+            <button class="btn-adicionar" onclick="adicionarAoAgendamento('Combo: Cabelo + Barba', 55.00)">
+                Adicionar Serviço
+            </button>
+        </div>
+    </section>
+    <br><br>
+
+    <section id="secao4" class="pratos">
+        <img src="sombr.jpeg" alt="Sobrancelha">
+        <ul class="lista"> 
+            <h2>Sobrancelha na Navalha</h2>
+            <li>Alinhamento perfeito</li>
+            <li>Limpeza de excessos</li>
+            <li>Rápido e indolor</li>
+        </ul>
+        <div class="compra-container">
+            <h3>R$ 10,00</h3>
+            <button class="btn-adicionar" onclick="adicionarAoAgendamento('Sobrancelha na Navalha', 10.00)">
+                Adicionar Serviço
+            </button>
+        </div>
+    </section>
+    <br><br>
+
+    <section id="secao5" class="pratos">
+        <img src="risco.jpeg.jpeg" alt="Pezinho">
+        <ul class="lista"> 
+            <h2>Pezinho / Acabamento</h2>
+            <li>Ideal para manutenção do corte</li>
+            <li>Limpeza da nuca e laterais</li>
+            <li>Acabamento navalhado</li>
+        </ul>
+        <div class="compra-container">
+            <h3>R$ 15,00</h3>
+            <button class="btn-adicionar" onclick="adicionarAoAgendamento('Pezinho', 15.00)">
+                Adicionar Serviço
+            </button>
+        </div>
+    </section>
+    <br><br>
+    </section>
+    <br><br>
+
+    <div id="resumo-agendamento" style="border: 1px solid #ccc; padding: 20px; margin: 20px; border-radius: 8px;">
+        <h3>✂️ Seus Serviços Selecionados</h3>
+        <ul id="lista-itens">
+        </ul>
+        <p><strong>Total: R$ <span id="valor-total">0.00</span></strong></p>
+        
+        <div style="margin-bottom: 15px;">
+            <label for="nome-cliente">Seu Nome: </label>
+            <input type="text" id="nome-cliente" placeholder="Digite seu nome" required><br><br>
+            <label for="data-hora">Sugestão de Horário: </label>
+            <input type="datetime-local" id="data-hora" required>
+        </div>
+
+        <button class="btn-enviar" onclick="enviarAgendamento()">
+            Finalizar no WhatsApp
+        </button>
+
+        <button class="btn-limpar" onclick="limparAgendamento()">
+            Limpar Escolhas
+        </button>
+    </div>
+
+    <footer>
+        <nav id="rodape">
+            <ul>
+                <li><a href="#secao1">Voltar ao Início</a></li>
+            </ul>
+        </nav> 
+    </footer>
+
+<script>
+    let servicosSelecionados = [];
+    let valorTotal = 0;
+
+    function adicionarAoAgendamento(nome, preco) {
+        servicosSelecionados.push({ nome, preco });
+        valorTotal += preco;
+        renderizarAgendamento();
+
+        alert("Você selecionou: " + nome);
+    }
+
+    function renderizarAgendamento() {
+        const lista = document.getElementById('lista-itens');
+        const totalSpan = document.getElementById('valor-total');
+        
+        lista.innerHTML = '';
+        servicosSelecionados.forEach(item => {
+            const li = document.createElement('li');
+            li.innerHTML = `<span>• ${item.nome}</span> - <span>R$ ${item.preco.toFixed(2)}</span>`;
+            lista.appendChild(li);
+        });
+        
+        totalSpan.textContent = valorTotal.toFixed(2);
+    }
+
+    function limparAgendamento() {
+        servicosSelecionados = [];
+        valorTotal = 0;
+        document.getElementById('nome-cliente').value = '';
+        document.getElementById('data-hora').value = '';
+        renderizarAgendamento();
+    }
+
+    function obterHorariosAgendados() {
+        const salvos = localStorage.getItem('barbearia_horarios');
+        return salvos ? JSON.parse(salvos) : [];
+    }
+
+    function salvarNovoHorario(dataHoraString) {
+        const horarios = obterHorariosAgendados();
+        horarios.push(dataHoraString);
+        localStorage.setItem('barbearia_horarios', JSON.stringify(horarios));
+    }
+
+    function enviarAgendamento() {
+        if (servicosSelecionados.length === 0) {
+            alert("Você não selecionou nenhum serviço!");
+            return;
+        }
+
+        const nomeCliente = document.getElementById('nome-cliente').value;
+        const dataHora = document.getElementById('data-hora').value;
+
+        if (!nomeCliente || !dataHora) {
+            alert("Por favor, informe seu Nome e a Data/Horário que deseja agendar.");
+            return;
+        }
+
+        const horariosOcupados = obterHorariosAgendados();
+        if (horariosOcupados.includes(dataHora)) {
+            alert("Desculpe, este horário já foi reservado por outro cliente. Por favor, escolha outro momento!");
+            return;
+        }
+
+        salvarNovoHorario(dataHora);
+
+        const dataFormatada = new Date(dataHora).toLocaleString('pt-BR');
+
+        let msg = "💈 *Novo Agendamento Solicitado* 💈\n\n";
+        msg += `*Cliente:* ${nomeCliente}\n`;
+        msg += `*Horário sugerido:* ${dataFormatada}\n\n`;
+        msg += `*Serviços escolher:* \n`;
+        
+        servicosSelecionados.forEach(item => {
+            msg += `• ${item.nome}: R$ ${item.preco.toFixed(2)}\n`;
+        });
+        
+        msg += `\n*Total estimado: R$ ${valorTotal.toFixed(2)}*`;
+
+        const numero = "5511978769481"; 
+        const url = `https://wa.me/${numero}?text=${encodeURIComponent(msg)}`;
+        window.open(url, '_blank');
+    }
+</script>
+</body>
+</html>
